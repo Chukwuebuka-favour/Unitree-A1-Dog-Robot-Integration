@@ -1,0 +1,70 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="unitreeA1">
+    <xacro:macro name="link" params="name part xyz='0 0 0' rpy='0 0 0' ">
+        <link name="${name}">
+            <visual>
+            <origin xyz="${xyz}" rpy="${rpy}"/>
+                <geometry>
+                    <mesh filename="package://unitree_a1_description/meshes/${part}.dae" scale="1 1 1"/>
+                </geometry>
+            </visual>
+        </link>
+    </xacro:macro>
+
+    <xacro:macro name="joint" params="name type parent child lower='0' upper='0' axis='0 0 0' xyz='0 0 0' rpy='0 0 0' ">
+        <joint name="${name}" type="${type}">
+            <origin xyz="${xyz}" rpy="${rpy}"/>
+            <parent link="${parent}"/>
+            <child link="${child}"/>
+            <axis xyz="${axis}"/>
+            <limit lower="${lower}" upper="${upper}" effort="0.0" velocity="0.0"/>
+        </joint>
+    </xacro:macro>
+
+    <link name="base_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://unitree_a1_description/meshes/trunk.dae" scale="1 1 1"/>
+            </geometry>
+        </visual>
+    </link>
+
+
+    <xacro:link name='front_hip_right' part='hip'/>
+    <xacro:joint name='front_hip_right_to_base_link' type="revolute" parent='base_link' child='front_hip_right' xyz='0.4 0.4 0' axis="1 0.0 1" lower='-0.785' upper='0.785' />
+
+    <xacro:link name='front_hip_left' part='hip' rpy='3.14 0 0' />
+    <xacro:joint name='front_hip_left_to_base_link' type="revolute" parent='base_link' child='front_hip_left' xyz='0.4 -0.4 0' axis="1 0.0 1" lower='-0.785' upper='0.785'/>
+
+    <xacro:link name='back_hip_right' part='hip' rpy='0 3.14 0' />
+    <xacro:joint name='back_hip_right_to_base_link' type="revolute" parent='base_link' child='back_hip_right' xyz='-0.4 0.4 0' axis="1 0.0 1" lower='-0.785' upper='0.785' />
+
+    <xacro:link name='back_hip_left' part='hip' rpy='3.14 3.14 0' />
+    <xacro:joint name='back_hip_left_to_base_link' type="revolute" parent='base_link' child='back_hip_left' xyz='-0.4 -0.4 0' axis="1 0.0 1" lower='-0.785' upper='0.785' />
+
+    <xacro:link name='front_thigh_right' part='thigh' rpy='0 0.8 0'/>
+    <xacro:joint name='front_thigh_right_to_front_hip_right' type="revolute" parent='front_hip_right' child='front_thigh_right' xyz='0 0.08 0' axis='0 1 0' lower='-3.14' upper='3.14' />
+
+    <xacro:link name='back_thigh_right' part='thigh' rpy='0 0.8 0'/>
+    <xacro:joint name='back_thigh_right_to_back_hip_right' type="revolute" parent='back_hip_right' child='back_thigh_right' xyz='0 0.08 0' axis='0 1 0' lower='-3.14' upper='3.14' />
+
+    <xacro:link name='front_thigh_left' part='thigh_mirror' rpy='0 0.8 0' />
+    <xacro:joint name='front_thigh_left_to_front_hip_left' type='revolute' parent='front_hip_left' child='front_thigh_left' xyz='0 -0.08 0' axis='0 1 0' lower='-3.14' upper='3.14' />
+
+    <xacro:link name='back_thigh_left' part='thigh_mirror' rpy='0 0.8 0' />
+    <xacro:joint name='back_thigh_left_to_back_hip_left' type='continuous' parent='back_hip_left' child='back_thigh_left' xyz='0 -0.08 0'  axis='0 1 0' lower='-3.14' upper='3.14' />
+
+    <xacro:link name='front_calf_right' part='calf' rpy='0 -0.82 0' />
+    <xacro:joint name='front_calf_right_to_front_thigh_right' type="revolute" parent='front_thigh_right' child='front_calf_right' xyz='-0.145 0 -0.14' axis='0 1 0' lower='-0.8' upper='0.8' />
+
+    <xacro:link name='back_calf_right' part='calf' rpy='0 -0.82 0' />
+    <xacro:joint name='back_calf_right_to_back_thigh_right' type="revolute" parent='back_thigh_right' child='back_calf_right' xyz='-0.145 0 -0.14' axis='0 1 0' lower='-0.8' upper='0.8' />
+
+    <xacro:link name='front_calf_left' part='calf' rpy='0 -0.82 0' />
+    <xacro:joint name='front_calf_left_to_front_thigh_left' type="revolute" parent='front_thigh_left' child='front_calf_left' xyz='-0.145 0 -0.14' axis='0 1 0' lower='-0.8' upper='0.8' />
+
+    <xacro:link name='back_calf_left' part='calf' rpy='0 -0.82 0' />
+    <xacro:joint name='back_calf_left_to_back_thigh_left' type="revolute" parent='back_thigh_left' child='back_calf_left' xyz='-0.145 0 -0.14' axis='0 1 0' lower='-0.8' upper='0.8' />
+
+
+</robot>
